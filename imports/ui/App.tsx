@@ -9,11 +9,11 @@ import { RegisterForm } from './RegisterForm';
 export const App = () => (
     <Router>
         <Routes>
-          <Route path="/" element={<Home/>} />
-          <Route path="/login" element={<LoginForm/>} />
-          <Route path="/register" element={<RegisterForm/>} />
-          <Route path="/posts" element={<RecipesList />} />
-          <Route path="/create_recipe" element={<RecipeForm />} />
+            <Route path="/" element={<Home/>} />
+            <Route path="/login" element={<LoginForm/>} />
+            <Route path="/register" element={<RegisterForm/>} />
+            <Route path="/posts" element={<RecipesList />} />
+            <Route path="/create_recipe" element={<RecipeForm />} />
         </Routes>
     </Router>
 );
