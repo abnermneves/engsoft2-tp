@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { useNavigate } from "react-router-dom";
+import { Meteor } from 'meteor/meteor';
 
 export const RegisterForm: React.FC = () => {
     const navigate = useNavigate()
@@ -9,6 +10,18 @@ export const RegisterForm: React.FC = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
 
     const canSubmit = username && password && password === confirmPassword;    
+
+    const submit = () => {
+        Meteor.call('user.create', username, password, (e: Meteor.Error) => {
+            if(e) {
+                alert("Não foi possível cadastrar novo usuário. Provavelmente o usuário já foi cadastrado.");
+                return;
+            }
+
+            Meteor.loginWithPassword(username, password);
+            navigate("/");
+        });
+    };
 
     return <div>
         <div>
@@ -35,6 +48,6 @@ export const RegisterForm: React.FC = () => {
                 onChange={e => setConfirmPassword(e.target.value)}
             />
         </div>
-        <button disabled={!canSubmit}>Cadastrar</button>
+        <button disabled={!canSubmit} onClick={submit}>Cadastrar</button>
     </div>;
 };

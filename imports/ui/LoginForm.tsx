@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { useNavigate } from 'react-router-dom';
+import { Meteor } from "meteor/meteor";
 
 export const LoginForm: React.FC = () => {
     const navigate = useNavigate()
@@ -10,7 +11,15 @@ export const LoginForm: React.FC = () => {
     const canSubmit = username && password;
 
     const handleButtonClick = () => {
-        navigate('/posts')
+        Meteor.loginWithPassword(username, password, (e) => {
+            if(e) {
+                alert("Login ou senha inválidos");
+                return;
+            } 
+            
+            alert("Logado com sucesso");
+            navigate("/");
+        });
     };
     
 
