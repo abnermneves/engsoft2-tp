@@ -1,11 +1,18 @@
 import React, { useState } from "react"
+import { useNavigate } from 'react-router-dom';
 
 export const LoginForm: React.FC = () => {
+    const navigate = useNavigate()
   
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     const canSubmit = username && password;
+
+    const handleButtonClick = () => {
+        navigate('/posts')
+    };
+    
 
     return <div>
         <div>
@@ -24,7 +31,7 @@ export const LoginForm: React.FC = () => {
                 onChange={e => setPassword(e.target.value)}
             />
         </div>
-        <button disabled={!canSubmit}>Logar</button>
+        <button disabled={!canSubmit} onClick={handleButtonClick}>Logar</button>
         <button>Cadastrar</button>
     </div>;
 };

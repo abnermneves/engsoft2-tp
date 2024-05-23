@@ -40,6 +40,6 @@
   },
   "exclude": [
     "./.meteor/**",
-    "./packages/**"
+    "./packages/**",
   ]
 }
