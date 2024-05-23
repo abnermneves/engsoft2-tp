@@ -12,8 +12,6 @@ Meteor.methods({
         Accounts.createUser({
             username,
             password,
-        }, (error => {
-            
-        }));
+        });
     }
 });
