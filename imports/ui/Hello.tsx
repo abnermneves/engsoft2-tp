@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { LoginForm } from './LoginForm';
 
 export const Hello = () => {
     const [counter, setCounter] = useState(0);
@@ -9,8 +10,7 @@ export const Hello = () => {
 
     return (
         <div>
-            <button onClick={increment}>Click Me</button>
-            <p>You've pressed the button {counter} times.</p>
+            <LoginForm />
         </div>
     );
 };
