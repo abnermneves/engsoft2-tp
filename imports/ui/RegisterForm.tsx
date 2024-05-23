@@ -49,5 +49,6 @@ export const RegisterForm: React.FC = () => {
             />
         </div>
         <button disabled={!canSubmit} onClick={submit}>Cadastrar</button>
+        <button onClick={() => navigate(-1)}>Voltar</button>
     </div>;
 };

@@ -42,5 +42,6 @@ export const LoginForm: React.FC = () => {
         </div>
         <button disabled={!canSubmit} onClick={handleButtonClick}>Logar</button>
         <button onClick={() => navigate('/register')}>Cadastrar</button>
+        <button onClick={() => navigate(-1)}>Voltar</button>
     </div>;
 };
