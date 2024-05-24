@@ -5,7 +5,7 @@ import { check } from 'meteor/check';
 
 
 Meteor.methods({
-    'user.create': (username?: any, password?: any) => {
+    'user.create': function(username?: any, password?: any) {
         check(username, String);
         check(password, String);
 
