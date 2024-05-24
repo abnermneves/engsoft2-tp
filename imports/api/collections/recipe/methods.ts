@@ -29,6 +29,10 @@ const checkRecipeFields = (recipe: Partial<Recipe>) => {
     if(!Array.isArray(steps) || !steps.every(step => typeof step === "string")) {
         throw new Meteor.Error("invalid-steps", "Steps must be an array of strings.");
     }
+
+    if (typeof createdBy !== "string" || createdBy.trim() === "") {
+        throw new Meteor.Error("invalid-createdBy", "CreatedBy must be a non-empty string.");
+    }
 };
 
 
