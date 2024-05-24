@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Meteor } from "meteor/meteor";
 import { Recipe, Ingredient } from "/imports/api/collections/recipe/recipe";
+import { GoBack } from "../components/GoBack";
 
 
 export const RecipeView: React.FC = () => {
@@ -29,6 +30,7 @@ export const RecipeView: React.FC = () => {
     }, []);
 
     return <div>
+        <GoBack/>
         <div>
             <h1>{name}</h1>
         </div>
