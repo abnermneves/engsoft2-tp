@@ -18,6 +18,7 @@ export const RecipeView: React.FC = () => {
     const [ingredients, setIngredients] = useState<Ingredient[]>([]);
     const [steps, setSteps] = useState<string[]>([]);
     const [createdBy, setCreatedBy] = useState("");
+    const [avgRate, setAvgRate] = useState<string>("-");
 
     const user = useTracker(() => Meteor.user());
 
@@ -55,6 +56,7 @@ export const RecipeView: React.FC = () => {
                 setName(result.name);
                 setIngredients(result.ingredients);
                 setSteps(result.steps);
+                setAvgRate(result.numAvaliations == 0 ? "-" : (result.totalRating/result.numAvaliations).toString());
 
                 Meteor.call('user.get', result.createdBy, (e: Meteor.Error, r: any) => {
                     if(e) {
@@ -72,6 +74,7 @@ export const RecipeView: React.FC = () => {
         <GoBack/>
         <div>
             <h1>{name}</h1>
+            <h2>Nota média: {avgRate}</h2>
         </div>
 
         <h3>Ingredientes:</h3>

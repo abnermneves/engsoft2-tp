@@ -5,6 +5,10 @@ import { Mongo } from "meteor/mongo";
 import { check } from "meteor/check";
 
 
+const callback = (e: Meteor.Error, res: any) => {
+    throw e;
+};
+
 const checkCommentFields = (comment: Partial<Comment>) => {
     const allowedKeys: (keyof Comment)[] = ["text", "rate", "recipeId", "createdBy"];
     const extraKeys = Object.keys(comment).filter(key => !allowedKeys.includes(key as keyof Comment));
@@ -46,6 +50,8 @@ Meteor.methods({
             throw new Meteor.Error("invalid-createdBy", "Created by must match the current logged-in user.");
         }
 
+        Meteor.call("recipe.changeRating", comment.recipeId, 1, comment.rate, callback);
+
         return Comments.insertAsync(comment as Comment);
     },
     "comment.edit": function(comment?: Partial<CommentDoc>) {
@@ -58,7 +64,7 @@ Meteor.methods({
             throw new Meteor.Error("invalid-id", "Comment ID must be a valid string.");
         }
 
-
+        
         checkCommentFields({
             text: comment.text,
             rate: comment.rate,
@@ -70,6 +76,13 @@ Meteor.methods({
         if(comment.createdBy !== userId) {
             throw new Meteor.Error("invalid-createdBy", "Created by must match the current logged-in user.");
         }
+
+        Meteor.call("recipe.changeRating", comment.recipeId,0, comment.rate, callback);
+        
+        Meteor.call("comment.getOne", id, (e: Meteor.Error, res: Comment) => {
+            console.log(res.rate);
+            Meteor.call("recipe.changeRating", comment.recipeId, 0, -res.rate, callback);
+        });
 
         return Comments.updateAsync({ _id: comment._id, createdBy: this.userId } as Mongo.Selector<Comment>, comment);
     },
@@ -93,6 +106,10 @@ Meteor.methods({
         if(typeof id !== "string") {
             throw new Meteor.Error("invalid-id", "Comment ID must be a string.");
         }
+
+        Meteor.call("comment.getOne", id, (e: Meteor.Error, res: Comment) => {
+            Meteor.call("recipe.changeRating", res.recipeId, -1, -res.rate, callback);
+        });
 
         return Comments.removeAsync({_id: id, createdBy: this.userId});
     }

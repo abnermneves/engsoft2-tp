@@ -10,6 +10,8 @@ export interface Recipe {
     ingredients: [Ingredient],
     steps: [string],
     createdBy: string,
+    numAvaliations: number,
+    totalRating: number
 }
 
 export interface RecipeDoc extends Recipe {

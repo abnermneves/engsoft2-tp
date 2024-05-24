@@ -43,6 +43,8 @@ Meteor.methods({
         }
 
         checkRecipeFields(recipe);
+        recipe.numAvaliations = 0;
+        recipe.totalRating = 0;
         
         const userId: string | null = this.userId;
         if(recipe.createdBy !== userId) {
@@ -98,5 +100,23 @@ Meteor.methods({
         }
 
         return Recipes.removeAsync({_id: id, createdBy: this.userId});
+    },
+    'recipe.changeRating': function(id: string, addAvaliation: number, addRating: number){
+        Meteor.call("recipe.getOne", id, (e: Meteor.Error, result: Recipe) => {
+            if(e) {
+                console.log(id);
+                throw e;
+            }
+
+            result.totalRating += addRating;
+            result.numAvaliations += addAvaliation;
+            Meteor.call("recipe.edit", result, (e: Meteor.Error, result: any) =>{
+                if(e) {
+                    throw e;
+                    return;
+                }
+            });
+        });
+
     }
 });
