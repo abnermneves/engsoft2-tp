@@ -4,7 +4,11 @@ import { Meteor } from "meteor/meteor";
 import { RecipeDoc, Recipes } from "/imports/api/collections/recipe/recipe";
 import { useNavigate } from "react-router-dom";
 
-export const RecipeList: React.FC = () => {
+export interface IRecipeList {
+    creator?: string;
+}
+
+export const RecipeList: React.FC<IRecipeList> = ({creator}) => {
 
     const navigate = useNavigate();
 
@@ -13,12 +17,11 @@ export const RecipeList: React.FC = () => {
         if(!handler.ready()) {
             return [];
         }
-        return Recipes.find({}).fetch();
+        return Recipes.find(creator ? {createdBy: creator} : {}).fetch();
     });
 
 
     return <div>
-        <h1>As melhores receitas estão aí:</h1>
         <ol>
             {recipes.map(recipe => <div
                 style={{cursor: "pointer"}}

@@ -12,8 +12,10 @@ export const Home = () => {
     
     return (
         <div>
+            <h1>As melhores receitas estão aí:</h1>
             <RecipeList />
             {userId ? <>
+                <button onClick={() => navigate("/recipe/myRecipes")}>Minhas Receitas</button>
                 <button onClick={() => Meteor.logout()}>Deslogar</button>
             </> : <>
                 <button onClick={() => navigate("/login")}>Login</button>

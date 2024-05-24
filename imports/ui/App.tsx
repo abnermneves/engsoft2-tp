@@ -5,6 +5,7 @@ import { LoginForm } from './LoginForm';
 import { RegisterForm } from './RegisterForm';
 import { RecipeEdit } from './recipes/RecipeEdit';
 import { RecipeView } from './recipes/RecipeView';
+import { MyRecipes } from './MyRecipes';
 
 export const App = () => (
     <Router>
@@ -14,6 +15,7 @@ export const App = () => (
             <Route path="/register" element={<RegisterForm/>} />
             <Route path="/recipe/edit/:id?" element={<RecipeEdit/>} />
             <Route path="/recipe/view/:id" element={<RecipeView/>} />
+            <Route path="/recipe/myRecipes" element={<MyRecipes/>} />
         </Routes>
     </Router>
 );
