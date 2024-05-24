@@ -13,5 +13,8 @@ Meteor.methods({
             username,
             password,
         });
+    },
+    'user.get': function(id) {
+        return Meteor.users.findOneAsync(id);
     }
 });

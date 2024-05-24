@@ -45,13 +45,8 @@ export const RecipeEdit: React.FC = () => {
                 return;
             }
 
-            if(res !== 1) {
-                alert("Não foi possível salvar.");
-                return;
-            }
-
             alert("Receita salva com sucesso.");
-            navigate(-1);
+            navigate(`/recipe/view/${res}`);
         };
 
         if(id) {
@@ -129,7 +124,7 @@ export const RecipeEdit: React.FC = () => {
 
         <div>
             <button onClick={submit}>Salvar</button>
-            <button onClick={() => navigate(-1)}>Cancelar</button>
+            <button onClick={() => navigate(`/recipe/view/${id}`)}>Cancelar</button>
         </div>
     </div>;
 };
