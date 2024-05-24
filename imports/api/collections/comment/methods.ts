@@ -18,7 +18,7 @@ const checkCommentFields = (comment: Partial<Comment>) => {
         throw new Meteor.Error("invalid-text", "Comment text must be a non-empty string.");
     }
 
-    if(typeof rate !== "number" || text.trim() === null) {
+    if(typeof rate !== "number" || rate === -1) {
         throw new Meteor.Error("invalid-rate", "You must rate the recipe.");
     }
 

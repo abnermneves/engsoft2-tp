@@ -8,12 +8,11 @@ import { useTracker } from "meteor/react-meteor-data";
 
 interface CommentViewProps{
     id: string;
+    handleEdit: (id: string) => void;
 }
 
-export const CommentView: React.FC<CommentViewProps> = ({id}) => {
+export const CommentView: React.FC<CommentViewProps> = ({id, handleEdit}) => {
     const navigate = useNavigate();
-
-    console.log("Id -> ",id)
 
     const [text, setText] = useState("");
     const [rate, setRate] = useState<number>(-1);
@@ -21,6 +20,20 @@ export const CommentView: React.FC<CommentViewProps> = ({id}) => {
 
 
     const user = useTracker(() => Meteor.user());
+
+    const callRemove = (id: string) => {
+        Meteor.call("comment.remove", id, (e: Meteor.Error, r: any) => {
+            if(e) {
+                alert(e);
+                return;
+            }
+
+            if(r !== 1) {
+                alert("Não foi possível remover");
+                return;
+            }
+        });
+    };
 
     useEffect(() => {
         if(id) {
@@ -47,9 +60,8 @@ export const CommentView: React.FC<CommentViewProps> = ({id}) => {
     }, []);
 
     return <div>
-        <GoBack/>
         <div>
-            <h4>Avaliação: {rate}</h4>
+            <h4>Nota: {rate}</h4>
             <h4>Comentário de {user?.username}:</h4>
         </div>
 
@@ -58,7 +70,8 @@ export const CommentView: React.FC<CommentViewProps> = ({id}) => {
 
         {createdBy === user?.username ? 
             <>
-                <button onClick={() => navigate(`/comment/edit/${id}`)}>Editar</button>
+                <button onClick={() => handleEdit(id)}>Editar</button>
+                <button onClick={() => callRemove(id)}>Remover</button>
             </> :
             <></>
         }

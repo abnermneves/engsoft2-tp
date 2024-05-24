@@ -12,12 +12,19 @@ export const RecipeView: React.FC = () => {
     const navigate = useNavigate();
     const { id } = useParams();
 
+    const [cmtId, setCmtId] = useState<string>("");
+
     const [name, setName] = useState("");
     const [ingredients, setIngredients] = useState<Ingredient[]>([]);
     const [steps, setSteps] = useState<string[]>([]);
     const [createdBy, setCreatedBy] = useState("");
 
     const user = useTracker(() => Meteor.user());
+
+    const handleEdit = (id: string) => {
+        setCmtId(id);
+        handleOpenPopup();
+    }; 
 
 
     // Comment popup
@@ -32,6 +39,7 @@ export const RecipeView: React.FC = () => {
     };
 
     const handleClosePopup = () => {
+        setCmtId('');
         setIsPopupOpen(false);
     };
 
@@ -92,7 +100,7 @@ export const RecipeView: React.FC = () => {
             <p>Criada por {createdBy}</p>
         }
         <button onClick={handleOpenPopup}>Escrever comentário</button>
-        <CommentPopup isOpen={isPopupOpen} onClose={handleClosePopup} recipeId={id} />
-        <CommentList recipeId={id} />
+        <CommentPopup isOpen={isPopupOpen} onClose={handleClosePopup} recipeId={id} id={cmtId}/>
+        <CommentList recipeId={id} handleEdit={handleEdit}/>
     </div>;
 };

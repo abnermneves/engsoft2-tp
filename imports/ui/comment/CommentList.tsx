@@ -7,40 +7,23 @@ import { CommentView } from "./CommentView";
 
 export interface ICommentList {
     recipeId?: string;
+    handleEdit: (id: string) => void;
 }
 
-export const CommentList: React.FC<ICommentList> = ({recipeId}) => {
-
-    const navigate = useNavigate();
+export const CommentList: React.FC<ICommentList> = ({recipeId, handleEdit}) => {
 
     const comments: CommentDoc[] = useTracker(() => {
         const handler = Meteor.subscribe("comments");
         if(!handler.ready()) {
             return [];
         }
-        console.log(Comments.find({recipeId: recipeId}).fetch());
         return Comments.find({recipeId: recipeId}).fetch();
     });
-
-    const callRemove = (id: string) => {
-        Meteor.call("comment.remove", id, (e: Meteor.Error, r: any) => {
-            if(e) {
-                alert(e);
-                return;
-            }
-
-            if(r !== 1) {
-                alert("Não foi possível remover");
-                return;
-            }
-        });
-    };
 
     return <div>
         <ol>
             {comments.map(comment => <div key={comment._id}><li>
-                <CommentView id={comment._id}></CommentView>
-               {/*  {creator && <button onClick={() => callRemove(comment._id)}>Remover</button>} */}
+                <CommentView id={comment._id} handleEdit={handleEdit}></CommentView>
             </li></div>)}
         </ol>
     </div>;

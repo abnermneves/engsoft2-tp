@@ -10,7 +10,7 @@ interface PopupProps {
   isOpen: boolean;
   onClose: () => void;
   recipeId: string | undefined;
-  id? : string;
+  id : string;
 }
 
 export const CommentPopup: React.FC<PopupProps> = ({ isOpen, onClose, recipeId, id}) => {
@@ -20,6 +20,7 @@ export const CommentPopup: React.FC<PopupProps> = ({ isOpen, onClose, recipeId, 
 
     const [text, setText] = useState("");
     const [rate, setRate] = useState<number>(-1);
+    const [_id, setId] = useState<string>(id);
 
     const getRate = () => {
       return rate;
@@ -38,8 +39,8 @@ export const CommentPopup: React.FC<PopupProps> = ({ isOpen, onClose, recipeId, 
     };
 
     useEffect(() => {
+      console.log(id);
         if(id) {
-          console.log("tipo: ", typeof id)
             Meteor.call("comment.getOne", id, (e: Meteor.Error, result: Comment) => {
                 if(e) {
                     alert(e);
@@ -51,7 +52,7 @@ export const CommentPopup: React.FC<PopupProps> = ({ isOpen, onClose, recipeId, 
                 setRate(result.rate);
             });
         }
-    }, []);
+    }, [isOpen]);
 
     const submit = () => {
         const callback = (e: Meteor.Error, res: any) => {
@@ -61,7 +62,7 @@ export const CommentPopup: React.FC<PopupProps> = ({ isOpen, onClose, recipeId, 
             }
 
             alert("Comentário salva com sucesso.");
-            //navigate(`/comment/view/${res}`);
+            window.location.reload();
         };
 
         if(id) {
@@ -85,9 +86,13 @@ export const CommentPopup: React.FC<PopupProps> = ({ isOpen, onClose, recipeId, 
     submit();
     setText('');
     onClose();
+    setRate(-1);
+    setId('');
   };
 
-  if (!isOpen) return null;
+  if (!isOpen){
+    return null;
+  };
 
   return (
     <div className="popup-overlay">
