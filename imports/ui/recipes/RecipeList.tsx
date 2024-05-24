@@ -20,17 +20,31 @@ export const RecipeList: React.FC<IRecipeList> = ({creator}) => {
         return Recipes.find(creator ? {createdBy: creator} : {}).fetch();
     });
 
+    const callRemove = (id: string) => {
+        Meteor.call("recipe.remove", id, (e: Meteor.Error, r: any) => {
+            if(e) {
+                alert(e);
+                return;
+            }
+
+            if(r !== 1) {
+                alert("Não foi possível remover");
+                return;
+            }
+        });
+    };
 
     return <div>
         <ol>
-            {recipes.map(recipe => <div
-                style={{cursor: "pointer"}}
-                onClick={() => navigate(`/recipe/view/${recipe._id}`)}
-            >
-                <li>
+            {recipes.map(recipe => <><div><li>
+                <span
+                    style={{cursor: "pointer"}}
+                    onClick={() => navigate(`/recipe/view/${recipe._id}`)}
+                >
                     {recipe.name}
-                </li>
-            </div>)}
+                </span>
+                {creator && <button onClick={() => callRemove(recipe._id)}>Remover</button>}
+            </li></div></>)}
         </ol>
     </div>;
 };

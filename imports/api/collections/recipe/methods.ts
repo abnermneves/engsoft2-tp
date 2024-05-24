@@ -87,5 +87,16 @@ Meteor.methods({
         }
  
         return Recipes.findOneAsync(id);
+    },
+    "recipe.remove": function(id?: string) {
+        if(!id) {
+            throw new Meteor.Error("invalid-id", "Recipe ID is required.");
+        }
+
+        if(typeof id !== "string") {
+            throw new Meteor.Error("invalid-id", "Recipe ID must be a string.");
+        }
+
+        return Recipes.removeAsync({_id: id, createdBy: this.userId});
     }
 });
