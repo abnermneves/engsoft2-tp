@@ -1,6 +1,7 @@
-import { Meteor } from 'meteor/meteor';
-import '../imports/api/collections/user/methods';
-import '../imports/api/collections/recipe/methods';
+import { Meteor } from "meteor/meteor";
+import "/imports/api/collections/user/methods";
+import "/imports/api/collections/recipe/methods";
+import "/imports/api/collections/recipe/publications";
 
 Meteor.startup(async () => {
     // Inicio

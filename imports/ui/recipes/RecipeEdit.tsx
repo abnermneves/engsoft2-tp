@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Meteor } from "meteor/meteor";
 import { useTracker } from "meteor/react-meteor-data";
 import { useNavigate, useParams } from "react-router-dom";
 import { Ingredient, Recipe } from "../../api/collections/recipe/recipe";
+import { GoBack } from "../components/GoBack";
 
 export const RecipeEdit: React.FC = () => {
     const navigate = useNavigate();
@@ -68,6 +69,8 @@ export const RecipeEdit: React.FC = () => {
     };
 
     return <div>
+        <GoBack/>
+        
         <div>
             <label>Nome:</label>
             <input type="text" value={name} onChange={e => setName(e.target.value)}/>
