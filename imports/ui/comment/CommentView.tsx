@@ -62,7 +62,7 @@ export const CommentView: React.FC<CommentViewProps> = ({id, handleEdit}) => {
     return <div>
         <div>
             <h4>Nota: {rate}</h4>
-            <h4>Comentário de {user?.username}:</h4>
+            <h4>Comentário de {createdBy}:</h4>
         </div>
 
 
