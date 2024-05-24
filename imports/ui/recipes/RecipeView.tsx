@@ -12,10 +12,11 @@ export const RecipeView: React.FC = () => {
     const [name, setName] = useState("");
     const [ingredients, setIngredients] = useState<Ingredient[]>([]);
     const [steps, setSteps] = useState<string[]>([]);
+    const [createdBy, setCreatedBy] = useState("");
 
     useEffect(() => {
         if(id) {
-            Meteor.call("recipe.getOne", id, (e: Meteor.Error, result: Recipe) => {
+            Meteor.call("recipe.getOne", id, async (e: Meteor.Error, result: Recipe) => {
                 if(e) {
                     alert(e);
                     navigate(-1);
@@ -25,6 +26,9 @@ export const RecipeView: React.FC = () => {
                 setName(result.name);
                 setIngredients(result.ingredients);
                 setSteps(result.steps);
+
+                const creator = await Meteor.users.findOneAsync(result.createdBy);
+                setCreatedBy(creator?.username || "");
             });
         }
     }, []);
@@ -52,5 +56,7 @@ export const RecipeView: React.FC = () => {
                 </li>
             ))}
         </ol>
+
+        <p>Criada por {createdBy}</p>
     </div>;
 };
