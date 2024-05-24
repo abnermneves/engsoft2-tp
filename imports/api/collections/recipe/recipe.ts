@@ -12,4 +12,8 @@ export interface Recipe {
     createdBy: string,
 }
 
+export interface RecipeDoc extends Recipe {
+    _id: string,
+}
+
 export const Recipes = new Mongo.Collection<Recipe>('recipes');
