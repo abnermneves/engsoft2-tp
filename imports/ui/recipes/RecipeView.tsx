@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Meteor } from "meteor/meteor";
 import { Recipe, Ingredient } from "/imports/api/collections/recipe/recipe";
 import { GoBack } from "../components/GoBack";
+import { useTracker } from "meteor/react-meteor-data";
 
 
 export const RecipeView: React.FC = () => {
@@ -13,6 +14,8 @@ export const RecipeView: React.FC = () => {
     const [ingredients, setIngredients] = useState<Ingredient[]>([]);
     const [steps, setSteps] = useState<string[]>([]);
     const [createdBy, setCreatedBy] = useState("");
+
+    const user = useTracker(() => Meteor.user());
 
     useEffect(() => {
         if(id) {
@@ -27,8 +30,14 @@ export const RecipeView: React.FC = () => {
                 setIngredients(result.ingredients);
                 setSteps(result.steps);
 
-                const creator = await Meteor.users.findOneAsync(result.createdBy);
-                setCreatedBy(creator?.username || "");
+                Meteor.call('user.get', result.createdBy, (e: Meteor.Error, r: any) => {
+                    if(e) {
+                        alert("Falha ao obter criador");
+                        return;
+                    }          
+                    
+                    setCreatedBy(r.username); 
+                });
             });
         }
     }, []);
@@ -57,6 +66,12 @@ export const RecipeView: React.FC = () => {
             ))}
         </ol>
 
-        <p>Criada por {createdBy}</p>
+        {createdBy === user?.username ? 
+            <>
+                <p>Criada por você!</p>
+                <button onClick={() => navigate(`/recipe/edit/${id}`)}>Editar</button>
+            </> :
+            <p>Criada por {createdBy}</p>
+        }
     </div>;
 };

@@ -21,5 +21,6 @@ export const MyRecipes: React.FC = () => {
         <GoBack />
         <h1>Suas receitas:</h1>
         <RecipeList creator={userId || ""} />
+        <button onClick={() => navigate("/recipe/edit")}>Criar receita</button>
     </div>;
 };

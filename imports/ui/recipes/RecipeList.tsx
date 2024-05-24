@@ -36,7 +36,7 @@ export const RecipeList: React.FC<IRecipeList> = ({creator}) => {
 
     return <div>
         <ol>
-            {recipes.map(recipe => <><div><li>
+            {recipes.map(recipe => <div key={recipe._id}><li>
                 <span
                     style={{cursor: "pointer"}}
                     onClick={() => navigate(`/recipe/view/${recipe._id}`)}
@@ -44,7 +44,7 @@ export const RecipeList: React.FC<IRecipeList> = ({creator}) => {
                     {recipe.name}
                 </span>
                 {creator && <button onClick={() => callRemove(recipe._id)}>Remover</button>}
-            </li></div></>)}
+            </li></div>)}
         </ol>
     </div>;
 };
