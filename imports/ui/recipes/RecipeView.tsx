@@ -4,6 +4,8 @@ import { Meteor } from "meteor/meteor";
 import { Recipe, Ingredient } from "/imports/api/collections/recipe/recipe";
 import { GoBack } from "../components/GoBack";
 import { useTracker } from "meteor/react-meteor-data";
+import { CommentPopup }  from "../comment/CommentPopup";
+import { CommentList } from "../comment/CommentList";
 
 
 export const RecipeView: React.FC = () => {
@@ -16,6 +18,22 @@ export const RecipeView: React.FC = () => {
     const [createdBy, setCreatedBy] = useState("");
 
     const user = useTracker(() => Meteor.user());
+
+
+    // Comment popup
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [value, setValue] = useState('');
+
+    const handleOpenPopup = () => {
+        if(!user)
+            navigate(`/login`);
+        else
+            setIsPopupOpen(true);
+    };
+
+    const handleClosePopup = () => {
+        setIsPopupOpen(false);
+    };
 
     useEffect(() => {
         if(id) {
@@ -73,5 +91,8 @@ export const RecipeView: React.FC = () => {
             </> :
             <p>Criada por {createdBy}</p>
         }
+        <button onClick={handleOpenPopup}>Escrever comentário</button>
+        <CommentPopup isOpen={isPopupOpen} onClose={handleClosePopup} recipeId={id} />
+        <CommentList recipeId={id} />
     </div>;
 };
