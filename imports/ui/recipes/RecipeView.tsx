@@ -44,29 +44,30 @@ export const RecipeView: React.FC = () => {
     };
 
     useEffect(() => {
-        if(id) {
-            Meteor.call("recipe.getOne", id, async (e: Meteor.Error, result: Recipe) => {
-                if(e) {
-                    alert(e);
-                    navigate(-1);
-                    return;
-                }
-
-                setName(result.name);
-                setIngredients(result.ingredients);
-                setSteps(result.steps);
-                setAvgRate(result.numAvaliations == 0 ? "-" : (result.totalRating/result.numAvaliations).toString());
-
-                Meteor.call('user.get', result.createdBy, (e: Meteor.Error, r: any) => {
-                    if(e) {
-                        alert("Falha ao obter criador");
-                        return;
-                    }          
-                    
-                    setCreatedBy(r.username); 
-                });
-            });
+        if(!id) {
+            return;
         }
+        Meteor.call("recipe.getOne", id, async (e: Meteor.Error, result: Recipe) => {
+            if(e) {
+                alert(e);
+                navigate(-1);
+                return;
+            }
+
+            setName(result.name);
+            setIngredients(result.ingredients);
+            setSteps(result.steps);
+            setAvgRate(result.numAvaliations == 0 ? "-" : (result.totalRating/result.numAvaliations).toString());
+
+            Meteor.call('user.get', result.createdBy, (e: Meteor.Error, r: any) => {
+                if(e) {
+                    alert("Falha ao obter criador");
+                    return;
+                }          
+                
+                setCreatedBy(r.username); 
+            });
+        });
     }, []);
 
     return <div className="recipe-view-container">
