@@ -1,40 +1,53 @@
-
 import { Meteor } from "meteor/meteor";
 import { Recipe, RecipeDoc, Recipes } from "./recipe";
 import { Mongo } from "meteor/mongo";
 import { check } from "meteor/check";
 
-
 const checkRecipeFields = (recipe: Partial<Recipe>) => {
+    checkAllowedKeys(recipe);
+    checkName(recipe.name);
+    checkIngredients(recipe.ingredients);
+    checkSteps(recipe.steps);
+    checkCreatedBy(recipe.createdBy);
+};
+
+const checkAllowedKeys = (recipe: Partial<Recipe>) => {
     const allowedKeys: (keyof Recipe)[] = ["name", "ingredients", "steps", "createdBy"];
     const extraKeys = Object.keys(recipe).filter(key => !allowedKeys.includes(key as keyof Recipe));
     if(extraKeys.length > 0) {
         throw new Meteor.Error("extra-keys", `Recipe contains extra keys: ${extraKeys.join(", ")}`);
     }
+};
 
-    const { name, ingredients, steps, createdBy } = recipe;
-
+const checkName = (name: any) => {
     if(typeof name !== "string" || name.trim() === "") {
         throw new Meteor.Error("invalid-name", "Recipe name must be a non-empty string.");
     }
+};
 
-    if(!Array.isArray(ingredients) || !ingredients.every(ingredient => {
-        const ingredientKeys = Object.keys(ingredient);
-        return ingredientKeys.length === 2 && ingredientKeys.includes("name") && ingredientKeys.includes("amount") &&
-            typeof ingredient.name === "string" && typeof ingredient.amount === "string";
-    })) {
+const checkIngredients = (ingredients: any) => {
+    if(!Array.isArray(ingredients) || !ingredients.every(isValidIngredient)) {
         throw new Meteor.Error("invalid-ingredients", "Ingredients must be an array of objects with name and amount properties only.");
     }
+};
 
+const isValidIngredient = (ingredient: any) => {
+    const ingredientKeys = Object.keys(ingredient);
+    return ingredientKeys.length === 2 && ingredientKeys.includes("name") && ingredientKeys.includes("amount") &&
+        typeof ingredient.name === "string" && typeof ingredient.amount === "string";
+};
+
+const checkSteps = (steps: any) => {
     if(!Array.isArray(steps) || !steps.every(step => typeof step === "string")) {
         throw new Meteor.Error("invalid-steps", "Steps must be an array of strings.");
     }
+};
 
+const checkCreatedBy = (createdBy: any) => {
     if (typeof createdBy !== "string" || createdBy.trim() === "") {
         throw new Meteor.Error("invalid-createdBy", "CreatedBy must be a non-empty string.");
     }
 };
-
 
 Meteor.methods({
     "recipe.create": function(recipe?: Partial<Recipe>) {
@@ -63,7 +76,6 @@ Meteor.methods({
             throw new Meteor.Error("invalid-id", "Recipe ID must be a valid string.");
         }
 
-
         checkRecipeFields({
             name: recipe.name,
             ingredients: recipe.ingredients,
@@ -79,7 +91,6 @@ Meteor.methods({
         return Recipes.updateAsync({ _id: recipe._id, createdBy: this.userId } as Mongo.Selector<Recipe>, recipe);
     },
     "recipe.getOne": function(id?: string) {
-        
         if(!id) {
             throw new Meteor.Error("invalid-id", "Recipe ID is required.");
         }
@@ -87,7 +98,7 @@ Meteor.methods({
         if(typeof id !== "string") {
             throw new Meteor.Error("invalid-id", "Recipe ID must be a string.");
         }
- 
+
         return Recipes.findOneAsync(id);
     },
     "recipe.remove": function(id?: string) {
@@ -101,22 +112,20 @@ Meteor.methods({
 
         return Recipes.removeAsync({_id: id, createdBy: this.userId});
     },
-    'recipe.changeRating': function(id: string, addAvaliation: number, addRating: number){
-        Meteor.call("recipe.getOne", id, (e: Meteor.Error, result: Recipe) => {
-            if(e) {
+    "recipe.changeRating": function(id: string, addAvaliation: number, addRating: number) {
+        Meteor.call("recipe.getOne", id, (error: Meteor.Error, result: Recipe) => {
+            if(error) {
                 console.log(id);
-                throw e;
+                throw error;
             }
 
             result.totalRating += addRating;
             result.numAvaliations += addAvaliation;
-            Meteor.call("recipe.edit", result, (e: Meteor.Error, result: any) =>{
-                if(e) {
-                    throw e;
-                    return;
+            Meteor.call("recipe.edit", result, (error: Meteor.Error, result: any) => {
+                if(error) {
+                    throw error;
                 }
             });
         });
-
     }
 });
