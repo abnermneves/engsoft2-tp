@@ -14,3 +14,5 @@ Denilson Martins Vieira Santos\
 Natan Ventura Menezes\
 Rodrigo Luiz Macêdo Ferreira\
 Ábner de Marcos Neves
+
+Foi feito o deploy em uma hospedagem gratuita em: https://recipe-es.meteorapp.com/
