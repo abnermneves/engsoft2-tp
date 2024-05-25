@@ -10,3 +10,4 @@ Meteor.publish("comments", function() {
     // Retorna um cursor para os documentos encontrados
     return Comments.find({});
 });
+
