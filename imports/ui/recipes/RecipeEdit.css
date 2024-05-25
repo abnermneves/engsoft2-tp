@@ -1,0 +1,56 @@
+.recipe-edit-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.input-section {
+    margin-bottom: 20px;
+}
+
+.ingredient-item {
+    margin-bottom: 10px;
+}
+
+.step-item {
+    margin-bottom: 10px;
+}
+
+.add-ingredient-button, .add-step-button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.add-ingredient-button:hover, .add-step-button:hover {
+    background-color: #45a049;
+}
+
+.submit-button, .cancel-button {
+    background-color: #008CBA; /* Blue */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-right: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.submit-button:hover, .cancel-button:hover {
+    background-color: #0073aa;
+}

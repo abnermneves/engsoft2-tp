@@ -1,0 +1,25 @@
+.voting-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .voting-button {
+    cursor: pointer;
+    margin-right: 10px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .voting-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .voting-rate {
+    font-weight: bold;
+    margin-left: 10px;
+  }
+  

@@ -1,0 +1,24 @@
+.my-recipes {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .my-recipes h1 {
+    font-size: 2rem;
+    color: #333;
+  }
+  
+  .my-recipes button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  
+  .my-recipes button:hover {
+    background-color: #0056b3;
+  }
+  

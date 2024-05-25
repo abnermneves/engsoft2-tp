@@ -1,0 +1,45 @@
+.comment-list-container {
+    margin-top: 20px;
+}
+
+.comment-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.comment-list li {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.comment-list li:hover {
+    background-color: #f9f9f9;
+}
+
+.comment-list li:first-child {
+    margin-top: 0;
+}
+
+.comment-list li:last-child {
+    margin-bottom: 0;
+}
+
+.comment-list li .comment-actions {
+    margin-top: 5px;
+}
+
+.comment-list li .comment-actions button {
+    margin-right: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+    border: none;
+    background-color: #dc3545;
+    color: white;
+    border-radius: 5px;
+}
+
+.comment-list li .comment-actions button:hover {
+    background-color: #c82333;
+}

@@ -1,0 +1,30 @@
+.home-container {
+    text-align: center;
+    padding: 50px 20px;
+    background-color: #f0f8ff;
+  }
+  
+  .home-container h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #ff6347;
+  }
+  
+  .home-container .recipe-list {
+    margin-bottom: 20px;
+  }
+  
+  .home-container button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  
+  .home-container button:hover {
+    background-color: #0056b3;
+  }
+  

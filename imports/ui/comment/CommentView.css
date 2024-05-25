@@ -1,0 +1,36 @@
+.comment-view-container {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .comment-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  
+  .comment-text {
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .edit-button,
+  .remove-button {
+    margin-right: 10px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .edit-button:hover,
+  .remove-button:hover {
+    background-color: #0056b3;
+  }
+  
