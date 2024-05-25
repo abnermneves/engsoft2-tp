@@ -1,9 +1,10 @@
 import React, { useState } from "react"
 import { useNavigate } from "react-router-dom";
 import { Meteor } from 'meteor/meteor';
+import './StyleRegisterForm.css';
 
 export const RegisterForm: React.FC = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
   
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -23,7 +24,7 @@ export const RegisterForm: React.FC = () => {
         });
     };
 
-    return <div>
+    return <div className="register-form">
         <div>
             <label>Usuário:</label>
             <input

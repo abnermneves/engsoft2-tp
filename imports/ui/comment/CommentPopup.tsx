@@ -3,8 +3,9 @@ import { VotingButton }  from './VotingButton';
 import React, { useEffect, useState } from "react";
 import { useTracker } from "meteor/react-meteor-data";
 import { useNavigate, useParams } from "react-router-dom";
-import { Comment,CommentDoc, Comments } from "../../api/collections/comment/comment";
+import { Comment, CommentDoc, Comments } from "../../api/collections/comment/comment";
 import { GoBack } from "../components/GoBack";
+import "./StyleCommentPopup.css";
 
 interface PopupProps {
   isOpen: boolean;
@@ -13,73 +14,75 @@ interface PopupProps {
   id : string;
 }
 
-export const CommentPopup: React.FC<PopupProps> = ({ isOpen, onClose, recipeId, id}) => {
+export const CommentPopup: React.FC<PopupProps> = ({ isOpen, onClose, recipeId, id }) => {
 
   const navigate = useNavigate();
-    const userId = useTracker(() => Meteor.userId());
+  const userId = useTracker(() => Meteor.userId());
 
-    const [text, setText] = useState("");
-    const [rate, setRate] = useState<number>(-1);
-    const [_id, setId] = useState<string>(id);
+  const [text, setText] = useState("");
+  const [rate, setRate] = useState<number>(-1);
+  const [_id, setId] = useState<string>(id);
 
-    const getRate = () => {
-      return rate;
-    };
+  const getRate = () => {
+    return rate;
+  };
 
-    const handleIncrement = () => {
-      if (rate < 5) {
-        setRate(rate + 1);
-      }
-    };
-  
-    const handleDecrement = () => {
-      if (rate > 0) {
-        setRate(rate - 1);
-      }
-    };
+  const handleIncrement = () => {
+    if (rate < 5) {
+      setRate(rate + 1);
+    }
+  };
 
-    useEffect(() => {
-      console.log(id);
-        if(id) {
-            Meteor.call("comment.getOne", id, (e: Meteor.Error, result: Comment) => {
-                if(e) {
-                    alert(e);
-                    navigate(-1);
-                    return;
-                }
+  const handleDecrement = () => {
+    if (rate > 0) {
+      setRate(rate - 1);
+    }
+  };
 
-                setText(result.text);
-                setRate(result.rate);
-            });
+  useEffect(() => {
+    console.log(id);
+    if (id) {
+      Meteor.call("comment.getOne", id, (e: Meteor.Error, result: Comment) => {
+        if (e) {
+          alert(e);
+          navigate(-1);
+          return;
         }
-    }, [isOpen]);
 
-    const submit = () => {
-        const callback = (e: Meteor.Error, res: any) => {
-            if(e) {
-                alert(e);
-                return;
-            }
+        setText(result.text);
+        setRate(result.rate);
+      });
+    }
+  }, [isOpen]);
 
-            alert("Comentário salva com sucesso.");
-            window.location.reload();
-        };
+  const submit = () => {
+    const callback = (e: Meteor.Error, res: any) => {
+      if (e) {
+        alert(e);
+        return;
+      }
 
-        if(id) {
-            Meteor.call("comment.edit", {
-                _id: id,
-                recipeId: recipeId,
-                text, rate,
-                createdBy: userId,
-            }, callback);
-        } else {
-            Meteor.call("comment.create", {
-              recipeId: recipeId,
-              text, rate,
-              createdBy: userId,
-            }, callback);
-        }
+      alert("Comentário salvo com sucesso.");
+      window.location.reload();
     };
+
+    if (id) {
+      Meteor.call("comment.edit", {
+        _id: id,
+        recipeId: recipeId,
+        text,
+        rate,
+        createdBy: userId,
+      }, callback);
+    } else {
+      Meteor.call("comment.create", {
+        recipeId: recipeId,
+        text,
+        rate,
+        createdBy: userId,
+      }, callback);
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -90,7 +93,7 @@ export const CommentPopup: React.FC<PopupProps> = ({ isOpen, onClose, recipeId, 
     setId('');
   };
 
-  if (!isOpen){
+  if (!isOpen) {
     return null;
   };
 
@@ -108,8 +111,9 @@ export const CommentPopup: React.FC<PopupProps> = ({ isOpen, onClose, recipeId, 
             value={text}
             onChange={(e) => setText(e.target.value)}
             required
+            className="comment-input"
           />
-          <button type="submit">Enviar</button>
+          <button type="submit" className="submit-button">Enviar</button>
         </form>
       </div>
     </div>

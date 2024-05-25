@@ -1,12 +1,12 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Meteor } from "meteor/meteor";
 import { Recipe, Ingredient } from "/imports/api/collections/recipe/recipe";
 import { GoBack } from "../components/GoBack";
 import { useTracker } from "meteor/react-meteor-data";
-import { CommentPopup }  from "../comment/CommentPopup";
+import { CommentPopup } from "../comment/CommentPopup";
 import { CommentList } from "../comment/CommentList";
-
+import "./StyleRecipeView.css"; // Importando o arquivo de estilos CSS
 
 export const RecipeView: React.FC = () => {
     const navigate = useNavigate();
@@ -26,7 +26,6 @@ export const RecipeView: React.FC = () => {
         setCmtId(id);
         handleOpenPopup();
     }; 
-
 
     // Comment popup
     const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -70,39 +69,43 @@ export const RecipeView: React.FC = () => {
         }
     }, []);
 
-    return <div>
+    return <div className="recipe-view-container">
         <GoBack/>
-        <div>
-            <h1>{name}</h1>
-            <h2>Nota média: {avgRate}</h2>
+        <div className="recipe-header">
+            <h1 className="recipe-title">{name}</h1>
+            <h2 className="recipe-average-rating">Nota média: {avgRate}</h2>
         </div>
 
-        <h3>Ingredientes:</h3>
-        <ol>
-            {ingredients.map((ingredient, idx) => (
-                <li key={idx.toString()}>
-                    <span>{ingredient.amount}: {ingredient.name}</span>
-                </li>
-            ))}
-        </ol>
+        <div className="recipe-section">
+            <h3 className="recipe-subtitle">Ingredientes:</h3>
+            <ol className="recipe-list">
+                {ingredients.map((ingredient, idx) => (
+                    <li key={idx.toString()} className="recipe-item">
+                        <span>{ingredient.amount}: {ingredient.name}</span>
+                    </li>
+                ))}
+            </ol>
+        </div>
 
-        <h3>Modo de preparo</h3>
-        <ol>
-            {steps.map((step, idx) => (
-                <li key={idx.toString()}>
-                    <span>{step}</span>
-                </li>
-            ))}
-        </ol>
+        <div className="recipe-section">
+            <h3 className="recipe-subtitle">Modo de preparo</h3>
+            <ol className="recipe-list">
+                {steps.map((step, idx) => (
+                    <li key={idx.toString()} className="recipe-item">
+                        <span>{step}</span>
+                    </li>
+                ))}
+            </ol>
+        </div>
 
         {createdBy === user?.username ? 
             <>
-                <p>Criada por você!</p>
-                <button onClick={() => navigate(`/recipe/edit/${id}`)}>Editar</button>
+                <p className="created-by">Criada por você!</p>
+                <button className="edit-button" onClick={() => navigate(`/recipe/edit/${id}`)}>Editar</button>
             </> :
-            <p>Criada por {createdBy}</p>
+            <p className="created-by">Criada por {createdBy}</p>
         }
-        <button onClick={handleOpenPopup}>Escrever comentário</button>
+        <button className="comment-button" onClick={handleOpenPopup}>Escrever comentário</button>
         <CommentPopup isOpen={isPopupOpen} onClose={handleClosePopup} recipeId={id} id={cmtId}/>
         <CommentList recipeId={id} handleEdit={handleEdit}/>
     </div>;

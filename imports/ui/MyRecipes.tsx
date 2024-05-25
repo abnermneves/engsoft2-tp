@@ -4,9 +4,9 @@ import { useTracker } from "meteor/react-meteor-data";
 import { useNavigate } from "react-router-dom";
 import { RecipeList } from "./recipes/RecipeList";
 import { Meteor } from "meteor/meteor";
+import './StyleMyRecipes.css';
 
 export const MyRecipes: React.FC = () => {
-
     const navigate = useNavigate();
     const userId: string | null = useTracker(() => Meteor.userId());
 
@@ -17,7 +17,7 @@ export const MyRecipes: React.FC = () => {
         }
     }, []);
 
-    return <div>
+    return <div className="my-recipes">
         <GoBack />
         <h1>Suas receitas:</h1>
         <RecipeList creator={userId || ""} />

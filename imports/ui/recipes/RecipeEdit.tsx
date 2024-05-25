@@ -4,6 +4,7 @@ import { useTracker } from "meteor/react-meteor-data";
 import { useNavigate, useParams } from "react-router-dom";
 import { Ingredient, Recipe } from "../../api/collections/recipe/recipe";
 import { GoBack } from "../components/GoBack";
+import "./StyleRecipeEdit.css";
 
 export const RecipeEdit: React.FC = () => {
     const navigate = useNavigate();
@@ -63,16 +64,16 @@ export const RecipeEdit: React.FC = () => {
         }
     };
 
-    return <div>
+    return <div className="recipe-edit-container">
         <GoBack/>
         
-        <div>
+        <div className="input-section">
             <label>Nome:</label>
             <input type="text" value={name} onChange={e => setName(e.target.value)}/>
         </div>
 
         <h3>Ingredientes:</h3>
-        {ingredients.map((ingredient, idx) => <div key={idx.toString()}>
+        {ingredients.map((ingredient, idx) => <div key={idx.toString()} className="ingredient-item">
             <label>Quantidade:</label>
             <input type="text" value={ingredient.amount} onChange={e => {
                 let newIngredients = [...ingredients];
@@ -93,7 +94,7 @@ export const RecipeEdit: React.FC = () => {
         </div>)}
 
         <div>
-            <button onClick={() => {
+            <button className="add-ingredient-button" onClick={() => {
                 const newIngredients = [...ingredients, {name: '', amount: ''}];
                 setIngredients(newIngredients);
             }}>Adicionar Ingrediente</button>
@@ -101,7 +102,7 @@ export const RecipeEdit: React.FC = () => {
 
 
         <h3>Modo de preparo</h3>
-        {steps.map((step, idx) => <div key={idx.toString()}>
+        {steps.map((step, idx) => <div key={idx.toString()} className="step-item">
             <label>Passo {idx + 1}:</label>
             <input type="text" value={step} onChange={e => {
                 let newSteps = [...steps];
@@ -116,15 +117,15 @@ export const RecipeEdit: React.FC = () => {
         </div>)}
 
         <div>
-            <button onClick={() => {
+            <button className="add-step-button" onClick={() => {
                 const newSteps = [...steps, ''];
                 setSteps(newSteps);
             }}>Adicionar passo</button>
         </div>
 
-        <div>
-            <button onClick={submit}>Salvar</button>
-            <button onClick={() => navigate(`/recipe/view/${id}`)}>Cancelar</button>
+        <div className="button-section">
+            <button className="submit-button" onClick={submit}>Salvar</button>
+            <button className="cancel-button" onClick={() => navigate(`/recipe/view/${id}`)}>Cancelar</button>
         </div>
     </div>;
 };

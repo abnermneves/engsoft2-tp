@@ -1,9 +1,10 @@
 import React, { useState } from "react"
 import { useNavigate } from 'react-router-dom';
 import { Meteor } from "meteor/meteor";
+import './StyleLoginForm.css';
 
 export const LoginForm: React.FC = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
   
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -23,7 +24,7 @@ export const LoginForm: React.FC = () => {
     };
     
 
-    return <div>
+    return <div className="login-form">
         <div>
             <label>Usuário:</label>
             <input
