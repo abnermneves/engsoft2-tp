@@ -14,7 +14,8 @@ Meteor.methods({
             password,
         });
     },
-    'user.get': function(id) {
+    'user.get': function(id?: any) {
+        check(id, String);
         return Meteor.users.findOneAsync(id);
     }
 });
