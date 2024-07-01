@@ -37,5 +37,5 @@ jobs:
     - name: Run Meteor tests
       env:
         MONGO_URL: mongodb://localhost:27017/meteor
-      run: |
-        TEST_WATCH=1 meteor test --driver-package meteortesting:mocha --port 3100
+        TEST_BROWSER_DRIVER: puppeteer
+      run: meteor test --once --driver-package meteortesting:mocha --port 3100
