@@ -9,7 +9,7 @@ const callback = (e: Meteor.Error, res: any) => {
     throw e;
 };
 
-const checkCommentFields = (comment: Partial<Comment>) => {
+export const checkCommentFields = (comment: Partial<Comment>) => {
     const allowedKeys: (keyof Comment)[] = ["text", "rate", "recipeId", "createdBy"];
     const extraKeys = Object.keys(comment).filter(key => !allowedKeys.includes(key as keyof Comment));
     if(extraKeys.length > 0) {

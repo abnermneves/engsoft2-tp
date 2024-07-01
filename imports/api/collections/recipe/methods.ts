@@ -1,9 +1,8 @@
 import { Meteor } from "meteor/meteor";
 import { Recipe, RecipeDoc, Recipes } from "./recipe";
 import { Mongo } from "meteor/mongo";
-import { check } from "meteor/check";
 
-const checkRecipeFields = (recipe: Partial<Recipe>) => {
+export const checkRecipeFields = (recipe: Partial<Recipe>) => {
     checkAllowedKeys(recipe);
     checkName(recipe.name);
     checkIngredients(recipe.ingredients);
@@ -11,39 +10,39 @@ const checkRecipeFields = (recipe: Partial<Recipe>) => {
     checkCreatedBy(recipe.createdBy);
 };
 
-const checkAllowedKeys = (recipe: Partial<Recipe>) => {
-    const allowedKeys: (keyof Recipe)[] = ["name", "ingredients", "steps", "createdBy"];
+export const checkAllowedKeys = (recipe: Partial<Recipe>) => {
+    const allowedKeys: (keyof Recipe)[] = ["name", "ingredients", "steps", "createdBy", "numAvaliations", "totalRating"];
     const extraKeys = Object.keys(recipe).filter(key => !allowedKeys.includes(key as keyof Recipe));
     if(extraKeys.length > 0) {
         throw new Meteor.Error("extra-keys", `Recipe contains extra keys: ${extraKeys.join(", ")}`);
     }
 };
 
-const checkName = (name: any) => {
+export const checkName = (name: any) => {
     if(typeof name !== "string" || name.trim() === "") {
         throw new Meteor.Error("invalid-name", "Recipe name must be a non-empty string.");
     }
 };
 
-const checkIngredients = (ingredients: any) => {
+export const checkIngredients = (ingredients: any) => {
     if(!Array.isArray(ingredients) || !ingredients.every(isValidIngredient)) {
         throw new Meteor.Error("invalid-ingredients", "Ingredients must be an array of objects with name and amount properties only.");
     }
 };
 
-const isValidIngredient = (ingredient: any) => {
+export const isValidIngredient = (ingredient: any) => {
     const ingredientKeys = Object.keys(ingredient);
     return ingredientKeys.length === 2 && ingredientKeys.includes("name") && ingredientKeys.includes("amount") &&
         typeof ingredient.name === "string" && typeof ingredient.amount === "string";
 };
 
-const checkSteps = (steps: any) => {
+export const checkSteps = (steps: any) => {
     if(!Array.isArray(steps) || !steps.every(step => typeof step === "string")) {
         throw new Meteor.Error("invalid-steps", "Steps must be an array of strings.");
     }
 };
 
-const checkCreatedBy = (createdBy: any) => {
+export const checkCreatedBy = (createdBy: any) => {
     if (typeof createdBy !== "string" || createdBy.trim() === "") {
         throw new Meteor.Error("invalid-createdBy", "CreatedBy must be a non-empty string.");
     }

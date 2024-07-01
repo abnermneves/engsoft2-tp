@@ -7,11 +7,11 @@ export interface Ingredient {
 
 export interface Recipe {
     name: string;
-    ingredients: [Ingredient],
-    steps: [string],
+    ingredients: Ingredient[],
+    steps: string[],
     createdBy: string,
     numAvaliations: number,
-    totalRating: number
+    totalRating: number,
 }
 
 export interface RecipeDoc extends Recipe {
