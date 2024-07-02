@@ -9,7 +9,7 @@ Meteor.methods({
         check(username, String);
         check(password, String);
 
-        Accounts.createUser({
+        return Accounts.createUser({
             username,
             password,
         });

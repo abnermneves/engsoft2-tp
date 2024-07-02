@@ -46,7 +46,9 @@ Meteor.methods({
         checkCommentFields(comment);
         
         const userId: string | null = this.userId;
-        if(comment.createdBy !== userId) {
+
+        let username = Meteor.call('user.get', comment.createdBy).username;
+        if(comment.createdBy !== userId && username !== "admin") {
             throw new Meteor.Error("invalid-createdBy", "Created by must match the current logged-in user.");
         }
 
@@ -73,7 +75,9 @@ Meteor.methods({
         });
 
         const userId: string | null = this.userId;
-        if(comment.createdBy !== userId) {
+
+        let username = Meteor.call('user.get', comment.createdBy).username;
+        if(comment.createdBy !== userId && username !== "admin") {
             throw new Meteor.Error("invalid-createdBy", "Created by must match the current logged-in user.");
         }
 
@@ -84,7 +88,7 @@ Meteor.methods({
             Meteor.call("recipe.changeRating", comment.recipeId, 0, -res.rate, callback);
         });
 
-        return Comments.updateAsync({ _id: comment._id, createdBy: this.userId } as Mongo.Selector<Comment>, comment);
+        return Comments.updateAsync({ _id: comment._id} as Mongo.Selector<Comment>, comment);
     },
     "comment.getOne": function(id? : string) {
         
@@ -111,6 +115,6 @@ Meteor.methods({
             Meteor.call("recipe.changeRating", res.recipeId, -1, -res.rate, callback);
         });
 
-        return Comments.removeAsync({_id: id, createdBy: this.userId});
+        return Comments.removeAsync({_id: id});
     }
 });

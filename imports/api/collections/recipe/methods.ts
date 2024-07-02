@@ -59,7 +59,8 @@ Meteor.methods({
         recipe.totalRating = 0;
         
         const userId: string | null = this.userId;
-        if(recipe.createdBy !== userId) {
+        let username = Meteor.call('user.get', recipe.createdBy).username;
+        if(recipe.createdBy !== userId && username !== "admin") {
             throw new Meteor.Error("invalid-createdBy", "Created by must match the current logged-in user.");
         }
 
@@ -83,11 +84,12 @@ Meteor.methods({
         });
 
         const userId: string | null = this.userId;
-        if(recipe.createdBy !== userId) {
+        let username = Meteor.call('user.get', recipe.createdBy).username;
+        if(recipe.createdBy !== userId && username !== "admin") {
             throw new Meteor.Error("invalid-createdBy", "Created by must match the current logged-in user.");
         }
 
-        return Recipes.updateAsync({ _id: recipe._id, createdBy: this.userId } as Mongo.Selector<Recipe>, recipe);
+        return Recipes.updateAsync({ _id: recipe._id, createdBy: recipe.createdBy } as Mongo.Selector<Recipe>, recipe);
     },
     "recipe.getOne": function(id?: string) {
         if(!id) {
@@ -109,7 +111,7 @@ Meteor.methods({
             throw new Meteor.Error("invalid-id", "Recipe ID must be a string.");
         }
 
-        return Recipes.removeAsync({_id: id, createdBy: this.userId});
+        return Recipes.removeAsync({_id: id });
     },
     "recipe.changeRating": function(id: string, addAvaliation: number, addRating: number) {
         Meteor.call("recipe.getOne", id, (error: Meteor.Error, result: Recipe) => {
