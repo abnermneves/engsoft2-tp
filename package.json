@@ -22,7 +22,11 @@
     "@types/react": "^18.2.5",
     "@types/react-dom": "^18.2.4",
     "@types/uuid": "^9.0.8",
+<<<<<<< HEAD
     "chai": "^4.4.1",
+=======
+    "puppeteer": "^1.20.0",
+>>>>>>> b5e65687d3997a4180b86a2892aa7ce27df5f4ac
     "typescript": "^4.9.5"
   },
   "meteor": {
