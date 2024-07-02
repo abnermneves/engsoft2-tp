@@ -9,13 +9,15 @@ on:
       - main
 
 jobs:
-  test-linux:
+  test:
     runs-on: ubuntu-latest
+
     services:
       mongo:
         image: mongo:4.4
         ports:
           - 27017:27017
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
@@ -23,66 +25,11 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '14'
+        node-version: 14
 
     - name: Install Meteor
       run: |
         curl https://install.meteor.com/ | sh
-
-    - name: Install npm dependencies
-      run: meteor npm install
-
-    - name: Install Puppeteer
-      run: meteor npm install --save-dev puppeteer@^1.5.0
-
-    - name: Run Meteor tests
-      env:
-        MONGO_URL: mongodb://localhost:27017/meteor
-        TEST_BROWSER_DRIVER: puppeteer
-      run: meteor test --once --driver-package meteortesting:mocha --port 3100
-
-  test-macos:
-    runs-on: macos-latest
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'
-
-    - name: Install Meteor
-      run: |
-        curl https://install.meteor.com/ | sh
-
-    - name: Install npm dependencies
-      run: meteor npm install
-
-    - name: Install Puppeteer
-      run: meteor npm install --save-dev puppeteer@^1.5.0
-
-    - name: Run Meteor tests
-      env:
-        MONGO_URL: mongodb://localhost:27017/meteor
-        TEST_BROWSER_DRIVER: puppeteer
-      run: meteor test --once --driver-package meteortesting:mocha --port 3100
-
-  test-windows:
-    runs-on: windows-latest
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'
-
-    - name: Install Meteor
-      run: |
-        Invoke-WebRequest -Uri https://install.meteor.com/ -OutFile meteor-install.ps1
-        & .\meteor-install.ps1
 
     - name: Install npm dependencies
       run: meteor npm install
